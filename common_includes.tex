@@ -1,0 +1,88 @@
+%% keep packages in alphabet order
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage[bottom]{footmisc}
+\usepackage{caption}
+\usepackage{color, colortbl}
+%%\usepackage{csquotes} %causes conflict on windows miktex
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[linktoc=all]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{pgf}
+\usepackage{scrextend}
+\usepackage{subfig}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{verbatim}
+\usepackage{ulem}
+%% includes
+% \include{emoticons}
+%
+
+%\newcommand{\LF}{}  % turn on to display large format
+\ifdefined \LF
+\usepackage[left=0.75in, top=0.75in, right=0.75in, bottom=0.75in, landscape]{geometry}  % for large format landscape
+\else
+\usepackage[left=0.75in, right=0.75in, top=0.75in, bottom=0.75in]{geometry}
+\fi
+%% New commands
+\newcommand{\Ctrl}[1]{Control\,--\,#1}
+%% change list bullets
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\rhd$}
+\renewcommand{\labelitemiii}{--}
+\renewcommand{\labelitemiv}{$\ast$}
+\newcommand{\xdownarrow}[1]{%
+	{\left\downarrow\vbox to #1{}\right.\kern-\nulldelimiterspace}
+}
+%% defaults for lstlistings
+\lstset{
+	basicstyle=\ttfamily,
+	mathescape,
+	xleftmargin=.25in,
+}
+%% setup default color scheme for references 
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=red
+}
+\definecolor{bubbles}{rgb}{0.91, 1.0, 1.0}  %% exemplar, see http://latexcolor.com/
+\definecolor{lightgray}{rgb}{0.9,0.9,0.9}  %%
+
+\setlength{\headheight}{52pt}
+
+\newbox\verbbox
+\newlength\myverbindent 
+\setlength\myverbindent{0.25in} % change this to change indentation. use \noindent to not indent
+\makeatletter
+\def\verbatim@processline{%
+	\hspace{\myverbindent}\the\verbatim@line\par}
+\makeatother
+%%
+\setlength\extrarowheight{2pt}  %% table padding, for readability
+\interfootnotelinepenalty=10000  %% avoid footnotes being split across multiple pages
+\fancyhf{}
+\pagestyle{fancyplain}
+\graphicspath{ {./images/} }
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}  %% Use 'C' as column specifier to center text in tables
+
+\setlength\arrayrulewidth{1pt} %% thicker lines for tables
