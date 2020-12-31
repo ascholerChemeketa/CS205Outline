@@ -10,7 +10,7 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: |
-            CS205Proposal.tex
+            CS205Outline.tex
             UsefulResources.tex
       - name: Create Release
         id: create_release
@@ -30,8 +30,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./CS205Proposal.pdf
-          asset_name: CS205Proposal.pdf
+          asset_path: ./CS205Outline.pdf
+          asset_name: CS205Outline.pdf
           asset_content_type: application/pdf
       - name: Upload Release Asset 2
         id: upload-release-asset-2

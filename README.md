@@ -6,7 +6,7 @@ Major Transfer Map.
 ## Releases
 
 A PDF is built on each push to the repository.
-[https://github.com/ascholerChemeketa/CS205Outline/releases](Check releases) to find the most recent published
+[Check the releases](https://github.com/ascholerChemeketa/CS205Outline/releases) to find the most recent published
 copy.
 
 ## Key files
