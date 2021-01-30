@@ -20,13 +20,13 @@
 
 	\section*{Overview}
 
-	CS205, System Programming and Architecture, was designed for students pursuing the \textcolor{red}{TODO - official name} research variant of the CS Major Transfer Map (MTM). Oregon State University and Portland State University both require a lower division course focusing on the interface between high-level code and hardware - including the credits for these courses was a critical part of making the MTM workable. This course, while not exactly equivalent to their courses, articulates to those courses and is accepted for CS elective credit at the University of Oregon \textcolor{red}{TODO - double check}.
+	CS205, System Programming and Architecture, was designed for students pursuing the OSU/PSU/UO variant of the CS Major Transfer Map (MTM). Oregon State University and Portland State University both require a lower division course focusing on the interface between high-level code and hardware - including the credits for these courses was a critical part of making the MTM workable. This course, while not exactly equivalent to their courses, articulates to those courses and is accepted for CS elective credit at the University of Oregon \textcolor{red}{TODO - waiting on response from Kathleen Freeman to confirm or change}.
 	 
 	The core theme of this course is "What really happens when software runs?" Students should learn how fundamental parts of C programs map to assembly code and binary representations, how this assembly is determined by the Instruction Set Architecture of a machine, the high-level structures of a processor, and the basic facilities provided by an operating system. The particular architecture and assembly studied is not proscribed - students exposed to any modern architecture should be adequately prepared for later courses.
 
-	For colleges that do not teach C as part of their CS161/162/260 sequence, this course also serves the essential role of introducing C programming so students are prepared for Junior year courses that assume a working knowledge of C. Thus, it is assumed that time will be devoted to learning the basics of C programming in addition to learning how C gets mapped to assembly code. After this course, students should be able to write moderately complex, well structured programs using C libraries and Linux system calls. Students should also have experience using a debugger on their code.
+	For colleges that do not teach C as part of their CS161/162/260 sequence, this course also serves the essential role of introducing C programming so students are prepared for Junior year courses that assume a working knowledge of C. Thus, it is assumed that time will be devoted to learning the basics of C programming in addition to learning how C gets mapped to assembly code. After this course, students should be able to write moderately complex, well-structured programs using C. Students should also have experience using a debugger on their code.
 	
-	Capture The Flag (CTF) activities that require reading assembly in context and basic dynamic analysis of code using a debugger are a key component of the course. To establish the level of mastery in these skills students are expected to develop, sample CTF assignments are described in this document. These activities, or equivalent ones, must be a part of any implementation of CS205 in order to be acceptable for transfer. To aid instructors in meeting this requirement, PSU is providing access to the CTF system they have developed (see CTF section for details).
+	Capture The Flag (CTF) style activities that require reading assembly in context and basic dynamic analysis of code using a debugger are a key component of the course. These are intended as a platform to develop hands on skills examining compiled code in static and dynamic contexts and are assumed to be an ongoing thread in the course as opposed to a standalone unit. These activities, or equivalent ones, must be a part of any implementation of CS205 in order to be acceptable for transfer. To aid instructors in meeting this requirement, PSU is providing access to the CTF system they have developed (see CTF section for details). 
 	
 	The 10th week of this course is designated as time to apply and expand the ideas of the course in a particular context. Three possible approaches - ones that focus on cybersecurity, operating systems, and designing for performance - are briefly outlined in this document to provide suggested uses for this week.
 	\clearpage
@@ -37,24 +37,62 @@
 	Any implementation of CS205 should include the following based outcomes.
 
 	\begin{enumerate}
-		\item Describe the major components of computer architecture, and explain their purposes and interactions.
+		\item Describe the major components of computer architecture; explain their purposes and interactions and the instruction execution cycle.
 		\item Describe a basic instruction set architecture, including the arithmetic, logic, and control instructions; user and control registers; and addressing modes.
-		\item Describe the instruction execution cycle. \textcolor{red}{TODO - Condense into first item?}
 		\item Do simple arithmetic in hexadecimal, decimal, and binary notation, and convert among these notations.
 		\item Explain how data types such as integers, characters, pointers, and floating point numbers are represented and used at the assembly level.
-		\item Write C language programs to illustrate basic systems programming concepts: file I/O, system calls, memory management, exception handling, and signals. \textcolor{red}{TODO - Update to match new version of course? Exception handling and signals are now one option for week 10}
+		\item Write C language programs that use control structures, functions, IO, arrays, and dynamic memory.
 		\item Describe each step of the compilation process by which C language programs are transformed into machine code.  
 		\item Explain how high-level programming constructs such as arrays, structures, loops, and stack-based function calls are implemented in  machine code. Recognize and reverse engineer same.
 		\item Demonstrate and use a debugger to analyze program flow, inspect register and stack contents. 
-		\item Identify and fix performance issues in C programs. \textcolor{red}{TODO - Update to match new version of course?}
-		\item \textcolor{red}{TODO - Something about CTF specific skills?}
+		\item Identify and fix performance issues in C programs that are caused by machine level concepts.
 		\item Explain how the information in this course is important within the overall context of computer science.
 	\end{enumerate}
 
 	\clearpage
 	
+	
+	\section{CTF Activities}
 
-	\section{Topic List}
+	Although Capture The Flag style activities derive from the cybersecurity community, the goal for these activities in this course is not the development of specific cybersecurity skills. Instead, their goal is to develop the skills necessary to inspect running machine-level code and the state of memory and understand what is going on. Those are the skills that serve as a foundation for future courses in operating systems, cybersecurity, compilers, and any other upper division work involving low level code.
+
+	Similarly, while CTF originated as part of competitions where teams compete to solve a series of increasingly fiendish challenges, implementors of this course are explicitly encouraged NOT to utilize a competitive structure or focus on open-ended puzzles. Activities adopted from the CTF community should be modified to focus on pedagogical effectiveness instead of their utility for differentiating competing teams based on problem solving skills.
+
+	Specific skills students are expected to develop are:
+
+	\begin{enumerate}
+		\item Use basic tools (e.g. objdump) to inspect compiled code.
+		\item Read assembly in context and understand it. In particular, understand code generated by a compiler.
+		\item Use a debugger (command line or visual) to inspect running code and memory.
+	\end{enumerate}
+
+	Sample activities:
+
+	\begin{enumerate}
+		\item Given a binary, use basic static analysis (objdump) to find a password or other information.
+		\item Given a binary, use basic static analysis (objdump) to figure out the proper input to give to cause a desired output. 
+		\item Given a binary, use a debugger to inspect it while running to figure out the proper input to cause a desired output. 
+		\item Modify an executable with a hex editor (or running code with a debugger) to enable/disable functionality (change a branch target).
+		\item Examine a program and engineer a basic buffer overflow on a stack based buffer to modify other local data or the return address. Or use a buffer to leak information about a running program. 
+	\end{enumerate}
+
+	More advanced CTF-style challenges likely go beyond the intended requirements of this course. This would include problems that involve: obfuscated code; detailed knowledge of OS constructs (user accounts); networking; buffer overflows that introduce new code; return oriented programming; or heap based exploits.
+
+	\subsection*{PSU CTF Activities}
+
+	Dr. Wu-chang Feng at PSU developed a web-based system, \url{https://oregonctf.org/}, for running CTF challenges and CTF style learning activities. A series of activities has been developed at PSU to support teaching their CS201. Each of these activity requires students to exercise skills to retrieve a password that is unique to them that verifies they completed the activity. So while students can help each with the techniques needed to solve each challenge, they cannot provide each other with answers.
+	
+	Dr. Feng and PSU have agreed to make the system available for schools implementing a CS205 to use. Schools can either:
+	
+	\begin{itemize}
+		\item Host their own server using this docker image: \url{https://hub.docker.com/repository/docker/wuchangfeng/metactf}.
+		\item Ask PSU to host a server as a subdomain at oregonctf.org. Contact wuchang@pdx.edu to set this up.
+	\end{itemize}
+
+	If you would like to test out the site, you can use \url{https://cs201.oregonctf.org} with the demo account credentials listed on the login page.
+
+
+	\section{CS205 Topic List}
 
 	% \begin{longtable}{| p{0.5in} | p{6in} |} \hline
 	% 	\rowcolor{lightgray}{\bf Wk} & {\bf Topic} \\ \hline \endhead
@@ -72,7 +110,8 @@
 	% \end{longtable}
 	
 
-	The listed ordering of topics should in no way be considered prescriptive. While the topics progress listed below generally progress from fundamental to more advanced, any particular implementation of CS205 will likely find it advantageous to rearrange or crosscut topics. In particular, because this course covers both C programming and how C code runs on hardware, there are two possible approaches to teaching it: 1) focus on C programming before diving into assembly and how the code runs; 2) iterate through areas of C programming and how they are implemented. The topic list is structured in the later manner: it describes the expected boundaries for C and lower levels of each topic simultaneously. That should not be understood as precluding teaching the course in a C first, assembly later fashion.
+	The listed ordering of topics should in no way be considered prescriptive. While the topics progress listed below generally progress from fundamental to more advanced, any particular implementation of CS205 will likely find it advantageous to rearrange or crosscut topics. In particular, because this course covers both C programming and how C code runs on hardware, there are two possible approaches to teaching it: 1) focus on C programming before diving into assembly and how the code runs; 2) iterate through areas of C programming and how they are implemented. The topic list is structured in the later manner: it describes the expected boundaries for C and lower levels of each topic simultaneously. That should not be understood as precluding teaching the course by first focusing on C and then covering assembly/machine level topics.
+
 
 	\subsection{Introduction to Systems}
 
@@ -84,7 +123,6 @@
 		\item Role of Operating System as hardware manager.
 	\end{enumerate}
 
-
 	\subsection{C Development Fundamentals}
 
 	Writing and debugging a C program that does basic IO. Other topics in C programming are broken out with their assembly counterparts but could be taught with the fundamentals to make a larger initial module on C programming.
@@ -95,6 +133,10 @@
 		\item Compiling and running C code from the command line.
 		\item Use of a debugger to examine running code at both the C and ASM level. Students should be familiar with setting breakpoints and examining the contents of registers and memory associated with symbols.
 	\end{enumerate}
+	
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch3\_00\_GdbIntro, Ch3\_00\_GdbPX, Ch3\_00\_GdbRegs
 
 
 	\subsection{Compiling, Linking, and Loading}
@@ -109,7 +151,11 @@
 		\item Static vs dynamic linking. 
 		\item Use of basic static inspection tools (e.g. objdump)
 	\end{enumerate}
-	
+
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch1\_LTrace, Ch1\_Readelf, Ch7\_13\_LdPreloadGetUID
+
 
 	\subsection{Data Representation}
 
@@ -126,6 +172,11 @@
 		\item Casting in C.
 	\end{enumerate}
 
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch2\_01\_Endian, Ch2\_01\_Showkey, Ch2\_03\_IntOverflow, Ch3\_02\_AsciiInstr
+
+
 	\subsection{Signed Arithmetic and Floating Point}
 
 	How we do integer math in C and ASM and floating point math in C. (Coverage of floating point instruction in ASM is not required.) How negative and fractional values are represented at a binary level. 
@@ -137,6 +188,10 @@
 		\item The floating point types and their use in C. 
 	\end{enumerate}
 	
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch2\_03\_TwosComplement, Ch2\_05\_FloatConvert
+
 
 	\subsection{Bitwise Operations}
 
@@ -148,6 +203,10 @@
 		\item Use of shifts to multiply/divide binary values. The difference between arithmetic and logic shifts.
 	\end{enumerate}
 	
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch2\_03\_XorInt, Ch3\_05\_LorStr
+
 
 	\subsection{Control Structures}
 
@@ -161,6 +220,9 @@
 		\item Implementation of C control structures in ASM.
 	\end{enumerate}
 
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch3\_06\_SwitchTable
 
 	\subsection{Memory and Pointers}
 
@@ -172,18 +234,21 @@
 		\item ASM addressing modes.
 		\item The use of the stack to store data via ASM push/pop operations. How that stack is layed out in memory and how the stack pointer is used to maintain it.
 	\end{enumerate}
+	
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch3\_04\_FnPointer, Ch3\_04\_LinkedList
+
 
 	\subsection{Dynamic Memory}
 
-	Allocation/deallocation of memory and the heap.
+	Allocation/deallocation of memory in C and the standard memory model. Memory management in ASM would be an advanced week 10 extension.
 
 	\begin{enumerate}
 		\item Use of free/malloc in C.
 		\item Heap vs stack. Strengths/weaknesses of allocations in each region.
 		\item The "standard" process memory model (and how reality often is more complicated).
-		\item \textcolor{red}{TODO - Does this need to extend to ASM. Or is this mostly about C?}
 	\end{enumerate}
-
 
 
 	\subsection{Functions}
@@ -197,6 +262,10 @@
 		\item ASM implementation of local memory. Frame pointer and stack allocation/deallocation.
 		\item Recursive functions - how the stack mechanism allows for reentrant code. 
 	\end{enumerate}
+	
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch3\_00\_GdbRegs, Ch3\_07\_ParamsRegs, Ch3\_07\_ParamsStack, Ch3\_07\_SegvBacktrace, Ch3\_07\_StaticStrcmp
 
 
 	\subsection{Arrays and C-strings}
@@ -211,6 +280,11 @@
 		\item C-string related conventions and functions: NULL termination and basic string library functions.
 		\item Stack based buffer overflow attacks.
 	\end{enumerate}
+	
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch3\_07\_CanaryBypass, Ch3\_07\_StackSmash, Ch3\_08\_Matrix
+
 
 	\subsection{Heterogenous Structures}
 
@@ -234,25 +308,12 @@
 		\item Basic performance optimizations available to high level language programmers: avoiding loop inefficiencies, reducing procedure calls and memory references, strength reductions.
 	\end{enumerate}
 
+	\subsubsection*{Relevant PSU CTF(s)}
 
-	\subsection{CTF}
-
-	\textcolor{red}{TODO - Provide list of specific kinds of skills students should have? If CTF's are "required", we need to clearly define expected level of work.}
-
-	\begin{enumerate}
-		\item ???
-		\item ???
-		\item ???
-	\end{enumerate}
-
-
+	Ch5\_08\_LoopUnroll
 
 	\clearpage
 	\section{Sample Schedule}
-
-	One possible ordering of topics over a ten week term:
-
-	\textcolor{red}{TODO - Mix in CTF details - will fill out later weeks of course.}
 
 	\begin{longtable}{| p{0.5in} | p{6in} |} \hline
 		\rowcolor{lightgray}{\bf Wk} & {\bf Topic} \\ \hline \endhead
@@ -282,12 +343,7 @@
 
 	\subsection{Operating Systems Programming}
 
-	On many computational devices operating system is the mediator between the machine code and the actual machine. A deeper look at the relation between code and the operating system is a way to review topics related to procedure calls and the address space and tease important topics for later work in Operating Systems courses.
-	
-	\textcolor{red}{TODO - Get Mark to help clean this up.}
-
-	\subsubsection{Interrupts, Traps, and Exceptions}
-	This chapter is currently required at PSU (BandO Chapter 8). This course is the direct prerequisite to CS 333, Introduction to Operating Systems, which assumes knowledge of interrupts, traps, and what system calls are about. The emphasis should be on POSIX-compliant system calls.
+	Students will generally go on to take an Operating Systems course that is very dependent on the skills developed in this course. Week 10 of CS205 is an opportunity to provide students with a consumer perspective on many of the topics they will study in depth in that OS course.
 	
 	\subsubsection{Exception Handling}
 	\begin{enumerate}
@@ -298,7 +354,7 @@
 		
 	\subsubsection{System Calls -- OS As Privileged Service Provider}
 
-	System calls are synchronous (traps). At the very least, there should be a detailed example of a simple C program making one or more system calls mapped down to assembly. The following exemplar is meant to be walked through line-by-line. This will help reinforce that system calls look just like function or library calls to the programmer. Modes will be introduced in the process discussion, below.
+	System calls are synchronous (traps). At the very least, there should be a detailed example of a simple C program making one or more system calls mapped down to assembly. The following exemplar is meant to be walked through line-by-line. This will help reinforce that system calls look just like function or library calls to the programmer. Modes will be introduced in the process discussion, below. The emphasis should be on POSIX-compliant system calls.
 	
 	\begin{enumerate}
 		\item Processes and logical flow control.
@@ -308,6 +364,16 @@
 		\item The Context Switch
 		\item System Call Error Handling
 		\item Process Control - fork/exec/wait
+	\end{enumerate}
+
+	\subsubsection*{Relevant PSU CTF(s)}
+
+	Ch8\_05\_PsSignals, Ch8\_05\_Signals
+
+	Resources:
+
+	\begin{enumerate}
+		\item Computer Systems - A Programmers's Perspective, Ch 8; Bryant and O'Hallaron
 	\end{enumerate}
 	
 	\subsection{Data Oriented Design and Optimization in Games}
