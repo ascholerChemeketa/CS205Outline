@@ -14,238 +14,308 @@
 
 \begin{document}
 
-	\section*{Overview}
+    \section*{Overview}
 
-	Useful samples for CS205
+    Useful samples for CS205
 
-	\setcounter{tocdepth}{1}
-	\tableofcontents
-	\clearpage
+    \setcounter{tocdepth}{1}
+    \tableofcontents
+    \clearpage
 
-	\section{Example Showing Impact of Cache Stride}\label{stride}
+    \section{Example Showing Impact of Cache Stride}\label{stride}
 
-	\begin{verbatim}
-	// example showing how stride through an array impacts execution time
-	
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <sys/time.h>
-	
-	#define MAX 1000
-	int a[MAX][MAX][MAX];
-	
-	void
-	test1() {
-	    for (int i=0; i<MAX; i++) {
-	        for (int j=0; j<MAX; j++) {
-	            for (int k=0; k<MAX; k++) {
-	                a[i][j][k] = i+j+k;
-	            }
-	        }
-	    }
-	}
+    \begin{verbatim}
+    // example showing how stride through an array impacts execution time
     
-	void
-	test2() {
-	    for (int k=0; k<MAX; k++) {
-	        for (int j=0; j<MAX; j++) {
-	            for (int i=0; i<MAX; i++) {
-	                a[i][j][k] = i+j+k;
-	            }
-	        }
-	    }
-	}
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <sys/time.h>
     
-	void
-	getTime(struct timeval *tv)
-	{
-	    if (gettimeofday(tv, 0) != 0) {
-	        printf("gettimeofday() failed. Aborting...\n");
-	        exit(EXIT_FAILURE);
-	    }
-	}
+    #define MAX 1000
+    int a[MAX][MAX][MAX];
     
-	int
-	main() 
-	{
-	    struct timeval tv1, tv2, tv3;
+    void
+    test1() {
+        for (int i=0; i<MAX; i++) {
+            for (int j=0; j<MAX; j++) {
+                for (int k=0; k<MAX; k++) {
+                    a[i][j][k] = i+j+k;
+                }
+            }
+        }
+    }
+    
+    void
+    test2() {
+        for (int k=0; k<MAX; k++) {
+            for (int j=0; j<MAX; j++) {
+                for (int i=0; i<MAX; i++) {
+                    a[i][j][k] = i+j+k;
+                }
+            }
+        }
+    }
+    
+    void
+    getTime(struct timeval *tv)
+    {
+        if (gettimeofday(tv, 0) != 0) {
+            printf("gettimeofday() failed. Aborting...\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    
+    int
+    main() 
+    {
+        struct timeval tv1, tv2, tv3;
         
-	    for (int i=1; i<3; i++) {
-	        getTime(&tv1);
-	        i%2 ? test1() : test2();
-	        getTime(&tv2);
-	        timersub(&tv2, &tv1, &tv3);
-	        printf("%s took %ld seconds and %ld microseconds\n",
-	            i%2 ? "test1()" : "test2()", tv3.tv_sec, tv3.tv_usec);
-	    }
+        for (int i=1; i<3; i++) {
+            getTime(&tv1);
+            i%2 ? test1() : test2();
+            getTime(&tv2);
+            timersub(&tv2, &tv1, &tv3);
+            printf("%s took %ld seconds and %ld microseconds\n",
+                i%2 ? "test1()" : "test2()", tv3.tv_sec, tv3.tv_usec);
+        }
         
-	    exit(EXIT_SUCCESS);
-	}
-	\end{verbatim}
+        exit(EXIT_SUCCESS);
+    }
+    \end{verbatim}
 
 
-	\noindent Output:
-	\begin{verbatim}
-	$ ./a.out
-	test1() took 5 seconds and 660435 microseconds
-	test2() took 122 seconds and 309618 microseconds
-	\end{verbatim}
+    \noindent Output:
+    \begin{verbatim}
+    $ ./a.out
+    test1() took 5 seconds and 660435 microseconds
+    test2() took 122 seconds and 309618 microseconds
+    \end{verbatim}
 
-	\section{Example Showing Union and Bit Fields}
-	Note: This is from PSU's CS 333 project 5, which isn't used anymore, but looked to add mode bits to the file system for implementing rudimentary protection.
-	\begin{verbatim}
-	union mode_t {
-	    struct {
-	        uint o_x : 1;
-	        uint o_w : 1;
-	        uint o_r : 1;  // other
-	        uint g_x : 1;
-	        uint g_w : 1;
-	        uint g_r : 1;  // group
-	        uint u_x : 1;
-	        uint u_w : 1;
-	        uint u_r : 1;  // user
-	        uint setuid : 1;
-	        uint     : 22; // pad
-	    } flags;
-	    uint asInt;
-	};
-		
-	struct dinode {
-	    short type;           // File type
-	    short major;          // Major device number (T_DEV only)
-	    short minor;          // Minor device number (T_DEV only)
-	    short nlink;          // Number of links to inode in file system
-	    union mode_t mode;    // protection/mode bits
-	    uint size;            // Size of file (bytes)
-	    uint addrs[NDIRECT+1];   // Data block addresses
-	};
-	\end{verbatim}
+    \section{Example Showing Union and Bit Fields}
+    Note: This is from PSU's CS 333 project 5, which isn't used anymore, but looked to add mode bits to the file system for implementing rudimentary protection.
+    \begin{verbatim}
+    union mode_t {
+        struct {
+            uint o_x : 1;
+            uint o_w : 1;
+            uint o_r : 1;  // other
+            uint g_x : 1;
+            uint g_w : 1;
+            uint g_r : 1;  // group
+            uint u_x : 1;
+            uint u_w : 1;
+            uint u_r : 1;  // user
+            uint setuid : 1;
+            uint     : 22; // pad
+        } flags;
+        uint asInt;
+    };
+        
+    struct dinode {
+        short type;           // File type
+        short major;          // Major device number (T_DEV only)
+        short minor;          // Minor device number (T_DEV only)
+        short nlink;          // Number of links to inode in file system
+        union mode_t mode;    // protection/mode bits
+        uint size;            // Size of file (bytes)
+        uint addrs[NDIRECT+1];   // Data block addresses
+    };
+    \end{verbatim}
 
-	\section{Example of {\tt fork()}}
-	\begin{verbatim}
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <unistd.h>
-	#include <string.h>
-	#include <sys/types.h>
-	#include <sys/wait.h>
-	#include <errno.h>
-		
-	extern int errno;
-		
-	void
-	print_error(char *msg)
-	{
-	    fprintf(stderr, "%s: %s\n", msg, strerror(errno));
-	    exit(0);
-	}
-		
-	pid_t
-	Fork(void)
-	{
-	    pid_t pid;
-	
-	    if ((pid = fork()) < 0)
-	        print_error("fork system call failed");
-	    return pid;
-	}
-		
-	int
-	main(int argc, char *argv[])
-	{
-	    int status;
-	    pid_t pid;
-			
-	    pid = Fork();  // wrapper makes code easier to read
-			
-	    if (pid == 0) {  // child process
-	        printf("Child process has UID %d and parent is %d\n", getpid(), getppid());
-	        sleep(10);
-	    }
-	    else {  // parent process
-	        printf("Parent process has UID %d and child is %d\n", getpid(), pid);
-	        pid = wait(&status);
-	        printf("child %d exited with status %d\n", pid, status);
-	    }
-			
-	    exit(EXIT_SUCCESS);
-	}
-	\end{verbatim}
+    \section{Example of {\tt fork()}}
+    \begin{verbatim}
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
+    #include <string.h>
+    #include <sys/types.h>
+    #include <sys/wait.h>
+    #include <errno.h>
+        
+    extern int errno;
+        
+    void
+    print_error(char *msg)
+    {
+        fprintf(stderr, "%s: %s\n", msg, strerror(errno));
+        exit(0);
+    }
+        
+    pid_t
+    Fork(void)
+    {
+        pid_t pid;
+    
+        if ((pid = fork()) < 0)
+            print_error("fork system call failed");
+        return pid;
+    }
+        
+    int
+    main(int argc, char *argv[])
+    {
+        int status;
+        pid_t pid;
+            
+        pid = Fork();  // wrapper makes code easier to read
+            
+        if (pid == 0) {  // child process
+            printf("Child process has UID %d and parent is %d\n", getpid(), getppid());
+            sleep(10);
+        }
+        else {  // parent process
+            printf("Parent process has UID %d and child is %d\n", getpid(), pid);
+            pid = wait(&status);
+            printf("child %d exited with status %d\n", pid, status);
+        }
+            
+        exit(EXIT_SUCCESS);
+    }
+    \end{verbatim}
 
-	\section{Example of {\tt exec()}}
-	\begin{verbatim}
-	#include <stdio.h>
-	#include <unistd.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#include <errno.h>
-		
-	extern int errno;
-		
-	int
-	main(int argc, char *argv[])
-	{
-	    if (argc < 2) {
-	        fprintf(stderr, "You must provide a command to run!\n");
-	        fprintf(stderr, "Exiting...\n");
-	            exit(EXIT_FAILURE);
-	    }
-			
-	    ++argv;  // a very cool trick
-			
-	    // using execvp -- see Linux man page: https://linux.die.net/man/3/execvp
-	    execvp(argv[0], argv);
-	    // will only return on exec failure. i.e., bad command
-	    fprintf(stderr, "%s: %s\n", argv[0], strerror(errno));
-			
-	    exit(EXIT_FAILURE);
-	}
-	\end{verbatim}
-	\noindent Output:
-	\begin{verbatim}
-	$ ./a.out ls /
-	bin   dev   home   lib64       media  pkgs  run   srv       sys  usr
-	boot  disk  lib    libx32      mnt    proc  sbin  stash     tmp  var
-	cat   etc   lib32  lost+found  opt    root  snap  swapfile  u    www
-	$ ./a.out bad-command
-	bad-command: No such file or directory
-	$ ./a.out ls bad-dir
-	ls: cannot access 'bad-dir': No such file or directory
-	\end{verbatim}
-	
+    \section{Example of {\tt exec()}}
+    \begin{verbatim}
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <errno.h>
+        
+    extern int errno;
+        
+    int
+    main(int argc, char *argv[])
+    {
+        if (argc < 2) {
+            fprintf(stderr, "You must provide a command to run!\n");
+            fprintf(stderr, "Exiting...\n");
+                exit(EXIT_FAILURE);
+        }
+            
+        ++argv;  // a very cool trick
+            
+        // using execvp -- see Linux man page: https://linux.die.net/man/3/execvp
+        execvp(argv[0], argv);
+        // will only return on exec failure. i.e., bad command
+        fprintf(stderr, "%s: %s\n", argv[0], strerror(errno));
+            
+        exit(EXIT_FAILURE);
+    }
+    \end{verbatim}
+    \noindent Output:
+    \begin{verbatim}
+    $ ./a.out ls /
+    bin   dev   home   lib64       media  pkgs  run   srv       sys  usr
+    boot  disk  lib    libx32      mnt    proc  sbin  stash     tmp  var
+    cat   etc   lib32  lost+found  opt    root  snap  swapfile  u    www
+    $ ./a.out bad-command
+    bad-command: No such file or directory
+    $ ./a.out ls bad-dir
+    ls: cannot access 'bad-dir': No such file or directory
+    \end{verbatim}
+    
 
 
-	\section{Simple hello-world with syscalls for x86-64}
-	\begin{verbatim}
-		int
-		main()
-		{
-			write(1, "hello world\n", 13);
-			_exit(0);
-		}
-	\end{verbatim}
-	
-	The assembly code will look like this
-	\begin{verbatim}
-		.section .data
-		string:
-		  .ascii "hello, world\n"
-		string_end:
-		  .equ len, string_end - string
-		.section .text
-		.globl main
-		main:
-		  ; First, call write(1, "hello, world\n", 13)
-		  movq $1, %rax      ; write is system call 1
-		  movq $1, %rdi      ; Arg1: stdout has descriptor 1
-		  movq $string, %rsi ; Arg2: hello world string
-		  movq $len, %rdx    ; Arg3: string length
-		  syscall            ;Make the system call
-		  ; Next, call _exit(0)
-		  movq $60, %rax     ; _exit is system call 60
-		  movq $0, %rdi      ; Arg1: exit status is 0
-		  syscall            ; Make the system call
-	\end{verbatim}
+    \section{Simple hello-world with syscalls for x86-64}
+    \begin{verbatim}
+        int
+        main()
+        {
+            write(1, "hello world\n", 13);
+            _exit(0);
+        }
+    \end{verbatim}
+    
+    The assembly code will look like this
+    \begin{verbatim}
+        .section .data
+        string:
+          .ascii "hello, world\n"
+        string_end:
+          .equ len, string_end - string
+        .section .text
+        .globl main
+        main:
+          ; First, call write(1, "hello, world\n", 13)
+          movq $1, %rax      ; write is system call 1
+          movq $1, %rdi      ; Arg1: stdout has descriptor 1
+          movq $string, %rsi ; Arg2: hello world string
+          movq $len, %rdx    ; Arg3: string length
+          syscall            ;Make the system call
+          ; Next, call _exit(0)
+          movq $60, %rax     ; _exit is system call 60
+          movq $0, %rdi      ; Arg1: exit status is 0
+          syscall            ; Make the system call
+    \end{verbatim}
+
+
+    \section{Example Showing Embedded Assembly }
+    
+    Demonstrates using Intel's cpuid instruction.
+
+    \begin{verbatim}
+// More info @ https://www.felixcloutier.com/x86/cpuid
+#include <stdio.h>
+#include <stdlib.h>
+
+void printChars(int c)
+{
+    // on Intel, integers are little endian, so chars are in reverse order.
+    printf("%c", c & 0xff);
+    printf("%c", (c >> 8) & 0xff);
+    printf("%c", (c >> 16) & 0xff);
+    printf("%c", (c >> 24) & 0xff);
+    return;
+}
+
+void doCPUID(int choice)
+{
+    int a[8] = {0};
+
+    switch (choice) {
+    case 0:   // Vendor information
+        __asm__("mov $0x0 , %eax\n\t");
+        break;
+    case 1:   // 2-4 are brand information
+        __asm__("mov $0x80000002 , %eax\n\t");
+        break;
+    case 2:
+        __asm__("mov $0x80000003 , %eax\n\t");
+        break;
+    case 3:
+        __asm__("mov $0x80000004 , %eax\n\t");
+        break;
+    default:
+        printf("Error! Aborting . . . \n");
+        exit(EXIT_FAILURE);
+    }
+
+    // call cpuid instruction and store the results in a[].
+    __asm__("cpuid\n\t");
+    __asm__("mov %%eax, %0\n\t":"=r" (a[0]));
+    __asm__("mov %%ebx, %0\n\t":"=r" (a[1]));
+    __asm__("mov %%ecx, %0\n\t":"=r" (a[2]));
+    __asm__("mov %%edx, %0\n\t":"=r" (a[3]));
+
+    if (choice == 0) {  // vendor
+//    printf("%d: ", a[0]);  // not interesting for us
+    printChars(a[1]);
+    printChars(a[3]);
+    printChars(a[2]);
+    printf("\n");
+    }
+    else {  // brand
+    printf("%s", (char *)&a[0]);
+    }
+}
+
+int main()
+{
+    for (int i=0; i<4; i++)
+    doCPUID(i);
+    printf("\n");
+    exit(EXIT_SUCCESS);
+}
+    \end{verbatim}
 
 \end{document}
