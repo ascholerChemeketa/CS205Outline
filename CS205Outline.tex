@@ -1,3 +1,4 @@
+
 \documentclass[12pt,letterpaper]{article}
 
 \input{common_includes.tex}  %% put includes here. They tend to get reused a lot
@@ -339,7 +340,26 @@
 	\subsection{Cybersecurity}
 
 	Cybersecurity related knowledge and skills are undergoing a rapid increase in interest among students and employers. Many code level security topics depend directly on the knowledge and skills in this course. A deeper dive into cybersecurity related topics provides an opportunity to emphasize the practical CTF challenges and tease more advanced ideas like return oriented programming.
-	
+
+    \subsubsection{Reverse engineering}
+    Reverse engineering of software is often done in a static fashion -- take a binary and pop it into a disassembler (\href{https://ghidra-sre.org/}{ghidra}, \href{https://cutter.re/}{Cutter (r2 or rizin)}, \href{https://www.hex-rays.com/products/ida/}{IDA}). This typically results in a listing of assembly code, either in list or call-graph form (sometimes both). Being able to read ASM, in any form, makes being able to reverse engineer software that much easier.
+
+    A good in class exercise would be to take a program you know the structure of, and demonstrate how to reverse it using Cutter. Even better, take a lab that involved dynamic analysis (gdb bomb or similar) and redo the exercise statically.
+
+    Having a sample binary to pop into Cutter here would be a good short HW -- have them write a description of what it does.
+
+    \subsubsection{Firmware hacking}
+
+    Most IoT devices aren't running x86 processors. Typically, they run some ARM variant, MIPS, or PPC. While this class doesn't cover those other architectures, knowledge of ASM is cross-functional. In other words, knowing ANY assembly language makes it easier to learn assembly language.
+
+    A fun alternative to the above suggested homework is to do the same thing\ldots but with a binary from a MIPS or PPC system.
+
+    \subsubsection{ROP}
+
+    Exploit development nearly always has an assembly component. Even a simple buffer overflow requires some of the text being used to overflow the buffer to be written in ASM. This is known as shell code. One common approach to getting the shell code to run is to use a technique known as return oriented programming, or ROP. At a high level, ROP involves leveraging \texttt{ret}-like instructions to eventually cause a jump to an address you can control.
+
+    A demonstration of a simple ROP chain would be a good in-class exercise, as well as talking about tools such as ropper or other similar gadget generation tools.
+
 	\textcolor{red}{TODO - Kevin to provide a short outline.}
 
 	\subsection{Operating Systems Programming}
